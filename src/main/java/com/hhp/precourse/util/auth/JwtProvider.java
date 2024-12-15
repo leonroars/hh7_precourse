@@ -1,8 +1,15 @@
 package com.hhp.precourse.util.auth;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.Jwts.SIG;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,8 +41,23 @@ public class JwtProvider {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));
     }
 
+    /**
+     * JWT : Access Token 생성 후 반환.
+     * @param memberId
+     * @return
+     */
     public String createAccessToken(Long memberId){
+        Date now = new Date();
+        Date expireAt = new Date(now.getTime() + accessExpiration);
 
+        return Jwts.builder()
+                .id(UUID.randomUUID().toString())
+                .issuer(issuer)
+                .subject(memberId.toString())
+                .issuedAt(now)
+                .expiration(expireAt)
+                .signWith(secretKey, SIG.HS512)
+                .compact();
     }
 
 }
