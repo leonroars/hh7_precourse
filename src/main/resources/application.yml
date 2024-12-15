@@ -1,0 +1,9 @@
+spring:
+  application:
+    name : "fundamentalCRUD"
+
+service:
+  jwt:
+    secret-key: 9698651846beb08c56e8dea111296934968323579790b7226e5ed353d40d105c50cfa4347891508581ce27453a033952640a95c7ab6a4b70e4fbf3cc355a4b0a
+    access-expiration: 900000 # Millisecond. 15분에 해당.
+    refresh-expiration: 7776000000
